@@ -21,6 +21,7 @@ if 'Journal Article' not in ','.join([pubtype.cdata for pubtype in obj.responseW
 	
 ''' build metadata dictionary'''
 metadata = {}
+metadata['authors'] = list([author.fullName.cdata for author in obj.responseWrapper.resultList.result.authorList.author])
 metadata['title'] = obj.responseWrapper.resultList.result.title.cdata
 metadata['date'] = obj.responseWrapper.resultList.result.firstPublicationDate.cdata
 metadata['volume'] = obj.responseWrapper.resultList.result.journalInfo.volume.cdata
