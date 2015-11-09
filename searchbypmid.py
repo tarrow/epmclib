@@ -22,6 +22,8 @@ def searchByPmid(pmcid):
 		
 	''' build metadata dictionary'''
 	metadata = {}
+	
+	#Need to handle situation where author is listed but no full name given. For example a collective name.
 	metadata['authors'] = list([author.fullName.cdata for author in obj.responseWrapper.resultList.result.authorList.author])
 	metadata['title'] = obj.responseWrapper.resultList.result.title.cdata
 	metadata['date'] = obj.responseWrapper.resultList.result.firstPublicationDate.cdata
@@ -37,4 +39,3 @@ def searchByPmid(pmcid):
 
 	return(metadata)
 	
-print(searchByPmid('PMC3834665'))
