@@ -16,7 +16,7 @@ class EPMClibTester(unittest.TestCase):
     def test_get_pmcid_lite_data(self):
         pmcid = getPMCID('PMC288264')
         pmcid.liteQuery()
-        result = pmcid.results
+        result = pmcid.rawresults
         idealresult = {'resultList': {'result': [
             {'hasReferences': 'Y', 'pageInfo': '1243-1252',
              'isOpenAccess': 'N', 'journalTitle': 'J Clin Invest', 'citedByCount': 114,
@@ -38,7 +38,7 @@ class EPMClibTester(unittest.TestCase):
     def test_get_pmcid_core_data(self):
         pmcid = getPMCID('PMC288264')
         pmcid.liteQuery()
-        result = pmcid.results
+        result = pmcid.rawresults
         idealresult = {'resultList': {'result':
                                           [{'id': '8376584',
                                             'title': 'beta 2-Microglobulin modified with advanced glycation end product'
@@ -59,3 +59,14 @@ class EPMClibTester(unittest.TestCase):
                                    'pageSize': 25}, 'hitCount': 1, 'version': '4.4.0'}
         print(result)
         self.assertEqual(idealresult, result)
+
+    def test_get_title_only(self):
+        pmcid = getPMCID('PMC288264')
+        pmcid.getTitle()
+        result = pmcid.title
+        self.assertEquals('beta 2-Microglobulin modified with advanced glycation end product'
+                          's is a major component of hemodialysis-associated amyloidosis.', result)
+
+
+
+

@@ -4,20 +4,26 @@ class getID():
 	epmc_basequeryurl = "http://www.ebi.ac.uk/europepmc/webservices/rest/search"
 
 	def __init__(self, id):
-		self.id = id
+		self.query = id
 
 	def resolves(self):
-		self.liteQuery()
-		if self.results['hitCount'] == 1:
+		if not hasattr(self, 'rawresults'):
+			self.liteQuery()
+		if self.rawresults['hitCount'] == 1:
 			return True
 		else:
 			return False
 
 	def coreQuery(self):
-		query = {'query':self.id,'resulttype':'core', 'format':'json'}
-		self.results = requests.get(epmc_basequeryurl, params=query)
+		webquery = {'query':self.query, 'resulttype': 'core', 'format': 'json'}
+		self.rawresults = requests.get(epmc_basequeryurl, params=webquery)
 
 	def liteQuery(self):
-		query = {'query':self.id,'resulttype':'lite', 'format':'json'}
+		query = {'query':self.query, 'resulttype': 'lite', 'format': 'json'}
 		r = requests.get(self.epmc_basequeryurl, params=query)
-		self.results = r.json()
+		self.rawresults = r.json()
+
+	def getTitle(self):
+		self.liteQuery()
+		if self.resolves() == True:
+			self.title=self.rawresults['resultList']['result'][0]['title']
