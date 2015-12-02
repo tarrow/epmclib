@@ -1,5 +1,6 @@
 import unittest
 from epmclib.getPMCID import getPMCID
+from epmclib.exceptions import IDNotResolvedException
 
 class EPMClibTester(unittest.TestCase):
 
@@ -67,6 +68,8 @@ class EPMClibTester(unittest.TestCase):
         self.assertEquals('beta 2-Microglobulin modified with advanced glycation end product'
                           's is a major component of hemodialysis-associated amyloidosis.', result)
 
-
+    def test_raise_id_not_found_exception(self):
+        pmcid = getPMCID('PMC2882643532')
+        self.assertRaises(IDNotResolvedException, pmcid.getTitle)
 
 

@@ -1,0 +1,2 @@
+class IDNotResolvedException(BaseException):
+	pass
