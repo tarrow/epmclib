@@ -31,7 +31,7 @@ class EPMClibTester(unittest.TestCase):
              'source': 'MED', 'id': '8376584', 'journalVolume': '92', 'journalIssn': '0021-9738',
              'hasTextMinedTerms': 'Y', 'pmid': '8376584', 'inPMC': 'N', 'hasPDF': 'Y', 'hasDbCrossReferences': 'N',
              'hasBook': 'N', 'luceneScore': 'NaN', 'hasTMAccessionNumbers': 'N'}]},
-            'request': {'resultType': 'lite', 'pageSize': 25, 'query': 'PMC288264', 'synonym': False, 'page': 1},
+            'request': {'resultType': 'lite', 'pageSize': 25, 'query': 'PMCID:PMC288264', 'synonym': False, 'page': 1},
             'version': '4.4.0', 'hitCount': 1}
 
         self.assertEqual(idealresult, result)
@@ -56,7 +56,7 @@ class EPMClibTester(unittest.TestCase):
                                             'inEPMC': 'Y', 'inPMC': 'N', 'pmcid': 'PMC288264',
                                             'pubType': 'journal article; research-article', 'pmid': '8376584',
                                             'hasLabsLinks': 'Y'}]},
-                       'request': {'resultType': 'lite', 'page': 1, 'synonym': False, 'query': 'PMC288264',
+                       'request': {'resultType': 'lite', 'page': 1, 'synonym': False, 'query': 'PMCID:PMC288264',
                                    'pageSize': 25}, 'hitCount': 1, 'version': '4.4.0'}
         print(result)
         self.assertEqual(idealresult, result)
@@ -71,5 +71,9 @@ class EPMClibTester(unittest.TestCase):
     def test_raise_id_not_found_exception(self):
         pmcid = getPMCID('PMC2882643532')
         self.assertRaises(IDNotResolvedException, pmcid.getTitle)
+
+    def test_no_prefix_on_pmcid_is_added(self):
+        pmcid = getPMCID('2882643532')
+        self.assertEquals(pmcid.query[6:],'PMC2882643532')
 
 

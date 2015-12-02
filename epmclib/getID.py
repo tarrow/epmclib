@@ -1,4 +1,5 @@
 import requests
+from . exceptions import IDNotResolvedException
 
 class getID():
 	epmc_basequeryurl = "http://www.ebi.ac.uk/europepmc/webservices/rest/search"
@@ -27,3 +28,5 @@ class getID():
 		self.liteQuery()
 		if self.resolves() == True:
 			self.title=self.rawresults['resultList']['result'][0]['title']
+		else:
+			raise(IDNotResolvedException)
