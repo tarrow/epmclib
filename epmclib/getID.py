@@ -21,25 +21,46 @@ class getID():
 		webquery = {'query':self.query, 'resulttype': 'core', 'format': 'json'}
 		r = requests.get(self.epmc_basequeryurl, params=webquery)
 		self.rawresults = r.json()
+		self.singleresult = self.rawresults['resultList']['result'][0]
 
 	def liteQuery(self):
 		query = {'query':self.query, 'resulttype': 'lite', 'format': 'json'}
 		r = requests.get(self.epmc_basequeryurl, params=query)
 		self.rawresults = r.json()
 
+
 	def getTitle(self):
-		self.liteQuery()
 		if self.resolves() == True:
 			try:
-				self.title=self.rawresults['resultList']['result'][0]['title']
+				singleresult = self.rawresults['resultList']['result'][0]
+				self.title=singleresult.get('title')
 			except KeyError:
-				self.title=""
+				self.title = ""
 		else:
 			raise(IDNotResolvedException)
 
-	def getLBMetadata(self):
+	def getBBasicMetadata(self):
 		self.coreQuery()
 		if self.resolves() == True:
+			singleresult = self.rawresults['resultList']['result'][0]
 			metadata = {'authors' : list(), 'orcids': dict()}
-			metadata['authors'].append(self.rawresults.get())
+
+			if not hasattr(self, 'title'):
+				self.getTitle()
+			metadata['title'] = self.title
+			metadata['authors'] = [ author.get('fullName') for author in singleresult['authorList']['author'] ]
+			metadata['date'] = singleresult.get('firstPublicationDate')
+			metadata['volume'] = singleresult['journalInfo'].get('volume')
+			metadata['issue'] = singleresult['journalInfo'].get('issue')
+			metadata['pages'] = singleresult.get('pageInfo')
+			metadata['journal'] = singleresult['journalInfo']['journal'].get('title')
+			metadata['issn'] = singleresult['journalInfo']['journal'].get('issn')
+			metadata['doi'] = singleresult.get('doi')
+			metadata['pmid'] = singleresult.get('pmid')
+			metadata['pmcid'] = singleresult.get('pmcid')
+
+
+
+			self.metadata = metadata
+
 
