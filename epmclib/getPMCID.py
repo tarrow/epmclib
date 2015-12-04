@@ -1,4 +1,4 @@
-from epmclib.getID import getID
+from . getID import getID
 
 class getPMCID(getID):
 	def __init__(self, id):

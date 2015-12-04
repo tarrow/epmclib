@@ -1,6 +1,8 @@
 import unittest
-from epmclib.getPMCID import getPMCID
-from epmclib.exceptions import IDNotResolvedException
+from .. epmclib.getPMCID import getPMCID
+from .. epmclib.getPMID import getPMID
+from .. epmclib.exceptions import *
+
 
 class EPMClibTester(unittest.TestCase):
 
@@ -38,7 +40,7 @@ class EPMClibTester(unittest.TestCase):
 
     def test_get_pmcid_core_data(self):
         pmcid = getPMCID('PMC288264')
-        pmcid.liteQuery()
+        pmcid.coreQuery()
         result = pmcid.rawresults
         idealresult = {'resultList': {'result':
                                           [{'id': '8376584',
@@ -61,7 +63,7 @@ class EPMClibTester(unittest.TestCase):
         print(result)
         self.assertEqual(idealresult, result)
 
-    def test_get_title_only(self):
+    def test_get_pmcid_title_only(self):
         pmcid = getPMCID('PMC288264')
         pmcid.getTitle()
         result = pmcid.title
@@ -76,4 +78,7 @@ class EPMClibTester(unittest.TestCase):
         pmcid = getPMCID('2882643532')
         self.assertEquals(pmcid.query[6:],'PMC2882643532')
 
+    def test_query_string_pmid(self):
+        pmid = getPMID('1219350')
+        self.assertEquals(pmid.query, 'ext_id:1219350 src:med')
 
