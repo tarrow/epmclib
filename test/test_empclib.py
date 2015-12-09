@@ -59,6 +59,33 @@ class EPMClibTester(unittest.TestCase):
         result = pmcid.title
         self.assertEquals('beta 2-Microglobulin modified with advanced glycation end product'
                           's is a major component of hemodialysis-associated amyloidosis.', result)
+    def test_get_pmcid_basic_metadata(self):
+        """Test basic metatdata for known result against hardcoded dict"""
+        pmcid = getPMCID('PMC288264')
+        pmcid.getBBasicMetadata()
+        result = pmcid.metadata
+        idealresult = {'authors': ['Miyata T',
+                                   'Oda O',
+                                   'Inagi R',
+                                   'Iida Y',
+                                   'Araki N',
+                                   'Yamada N',
+                                   'Horiuchi S',
+                                   'Taniguchi N',
+                                   'Maeda K',
+                                   'Kinoshita T'],
+                       'date': '1993-09-01',
+                       'doi': '10.1172/jci116696',
+                       'issn': '0021-9738',
+                       'issue': '3',
+                       'journal': 'The Journal of clinical investigation',
+                       'orcids': {},
+                       'pages': '1243-1252',
+                       'pmcid': 'PMC288264',
+                       'pmid': '8376584',
+                       'title': 'beta 2-Microglobulin modified with advanced glycation end products is a major component of hemodialysis-associated amyloidosis.',
+                       'volume': '92'}
+        self.assertEquals(result, idealresult)
 
     def test_raise_id_not_found_exception(self):
         """Check IDNotResolvedException is raised for known failer"""
@@ -74,4 +101,5 @@ class EPMClibTester(unittest.TestCase):
         """Test correct query string is added for PMIDS"""
         pmid = getPMID('1219350')
         self.assertEquals(pmid.query, 'ext_id:1219350 src:med')
+
 
