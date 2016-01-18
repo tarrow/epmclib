@@ -22,12 +22,13 @@ class getID():
 			return False
 
 	def coreQuery(self):
-		"""Performs a core query (gets all data available"""
+		"""Performs a core query (gets all data available)"""
 
 		webquery = {'query':self.query, 'resulttype': 'core', 'format': 'json'}
 		r = requests.get(self.epmc_basequeryurl, params=webquery)
 		self.rawresults = r.json()
-		self.singleresult = self.rawresults['resultList']['result'][0]
+		if len(self.rawresults['resultList']['result']) == 1:
+			self.singleresult = self.rawresults['resultList']['result'][0]
 
 	def liteQuery(self):
 		"""Performs a lite query (not that much data: quicker)"""
