@@ -60,7 +60,11 @@ class getID():
 			if not hasattr(self, 'title'):
 				self.getTitle()
 			metadata['title'] = self.title
-			metadata['authors'] = [ author.get('fullName') for author in singleresult['authorList']['author'] ]
+			if 'authorList' in singleresult:
+				metadata['authors'] = [ author.get('fullName') for author in singleresult['authorList']['author'] ]
+				for author in singleresult['authorList']['author']:
+					if 'authorId' in author:
+						metadata['orcids'][author['fullName']]=author['authorId']['value']
 			metadata['date'] = singleresult.get('firstPublicationDate')
 			metadata['volume'] = singleresult['journalInfo'].get('volume')
 			metadata['issue'] = singleresult['journalInfo'].get('issue')
