@@ -9,4 +9,5 @@ setup(name='EPMCLib',
       author_email='thomasarrow@gmail.com',
       url='https://github.com/tarrow/epmclib',
       packages=['epmclib'],
+      install_requires=['requests'],
      )
